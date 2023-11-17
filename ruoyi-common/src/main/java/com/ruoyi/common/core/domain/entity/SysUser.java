@@ -17,8 +17,7 @@ import com.ruoyi.common.xss.Xss;
  * 
  * @author ruoyi
  */
-public class SysUser extends BaseEntity
-{
+public class SysUser extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** 用户ID */

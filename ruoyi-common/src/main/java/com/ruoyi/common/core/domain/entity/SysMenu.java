@@ -14,8 +14,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 
  * @author ruoyi
  */
-public class SysMenu extends BaseEntity
-{
+public class SysMenu extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** 菜单ID */

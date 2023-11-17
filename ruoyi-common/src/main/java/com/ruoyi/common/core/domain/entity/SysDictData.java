@@ -14,8 +14,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 
  * @author ruoyi
  */
-public class SysDictData extends BaseEntity
-{
+public class SysDictData extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** 字典编码 */
