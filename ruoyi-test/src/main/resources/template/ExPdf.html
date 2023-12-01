@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Title</title>
+  <style>
+    body{
+      font-family: MiSans;
+      font-size: 15px;
+    }
+    .title{
+      text-align: center;
+    }
+    .content{
+      margin:0 auto;
+      width: 400px;
+    }
+    .content .text{
+      text-indent: 2em;
+    }
+    .content .datetime{
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+<div>
+  <div class="view">
+    <h2 class="title">自我介绍</h2>
+    <div class="content">
+      <p class="text">
+        大家好，我叫${person.personName}，我今年${person.personAge}，我是个${person.personGender}，
+        我的职业是${person.personVocation}，我目前住在${person.address}，我在性格方面${person.personalityDesc}。
+      </p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

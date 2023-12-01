@@ -91,6 +91,28 @@ public class FileUtils {
     }
 
     /**
+     * 写数据到文件中
+     *
+     * @param data      数据
+     * @param uploadDir 目标文件
+     * @return 目标文件
+     * @throws IOException IO异常
+     */
+    public static String writeBytes(byte[] data, String uploadDir, String extension) throws IOException {
+        FileOutputStream fos = null;
+        String pathName = "";
+        try {
+            pathName = DateUtils.datePath() + "/" + IdUtils.fastUUID() + "." + extension;
+            File file = FileUploadUtils.getAbsoluteFile(uploadDir, pathName);
+            fos = new FileOutputStream(file);
+            fos.write(data);
+        } finally {
+            IOUtils.close(fos);
+        }
+        return FileUploadUtils.getPathFileName(uploadDir, pathName);
+    }
+
+    /**
      * 删除文件
      *
      * @param filePath 文件
