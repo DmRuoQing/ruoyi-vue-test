@@ -10,7 +10,6 @@ import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.ClassPathResource;
 
 import java.io.*;
 import java.util.Map;
@@ -19,6 +18,7 @@ import java.util.Map;
 public class PdfUtil {
     // 原始记录的Excel模板
     public static final String EX_PDF = "ExPdf.html";
+    public static final String INDEX = "index.html";
 
     /**
      * 获取模板内容
@@ -29,7 +29,7 @@ public class PdfUtil {
     public static String getTemplateContent(String templateName, Map<String, Object> paramMap) {
         Configuration configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
         ClassTemplateLoader loader = new ClassTemplateLoader(
-                PdfUtil.class, File.separator+ "template" + File.separator
+                PdfUtil.class, File.separator+ "template" + File.separator+ "pdf" + File.separator
         );
         Writer out = new StringWriter();
         try {

@@ -1,0 +1,214 @@
+* {
+  margin: 0;
+  padding: 0;
+  color: #000;
+}
+html,
+body {
+  width: 100%;
+  font-size: 14px;
+
+}
+body {
+  width: 856px;
+  padding: 20px;
+  box-sizing: border-box;
+  margin: auto;
+}
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0  20px;
+  font-size: 16px;
+}
+.head::after {
+  display: block;
+  content: "";
+  height: 1px;
+  width: 100%;
+  margin: 20px 0 ;
+  background-color: #dcdfe6;
+  flex-shrink: 1;
+  flex-grow: 1 ;
+}
+header {
+  font-size: 20px;
+  text-align: center;
+}
+
+header > p {
+  line-height: 30px;
+}
+.page_height{
+  height: 1190px;
+}
+.div_line {
+  width: 100%;
+  height: 1px;
+  background-color: #dcdfe6;
+  margin: 16px 0;
+}
+/* 用户信息 */
+.userinfo {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.userinfo > div {
+  width: 25%;
+  height: 30px;
+  line-height: 30px;
+}
+/* 虚实寒热 */
+.line_wrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.line_chart {
+  margin-bottom: 5px;
+  height: 155px;
+  width: 150px;
+  border-radius: 8px;
+  background-color: #999;
+}
+.line_chart > img {
+  display: block;
+}
+
+.explain {
+  margin-top: 15px;
+  background-color: #d2d6e8;
+  padding: 20px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.box-colour-atla::before {
+  display: block;
+  content: "";
+  width: 20px;
+  height: 5px;
+  margin: 0 5px;
+}
+.box-colour-atla.zhengchang::before {
+  background-color: #fff;
+}
+.box-colour-atla.hanling::before {
+  background-color: #84c591;
+}
+.box-colour-atla.yinxu::before {
+  background-color: #d487ff;
+}
+.box-colour-atla.shirei::before {
+  background-color: #ff656a;
+}
+.box-colour-atla.yangxu::before {
+  background-color: #13ffec;
+}
+.box-colour-atla.yuhan::before {
+  background-color: #000000;
+}
+.box-colour-atla.yinyang::before {
+  background-color: #fdffab;
+}
+/* 八纲辨证 */
+.eight {
+  margin-top: 20px;
+}
+.eight > p {
+  text-align: center;
+}
+
+.title_befor {
+  display: flex;
+}
+.title_befor::before {
+  content: "";
+  width: 5px;
+  height: 20px;
+  background: #527dff;
+  margin-right: 10px;
+  border-radius: 2px;
+}
+
+.eight .content {
+  width: 100%;
+  height: 700px;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+.eight .content > img {
+  width: 50%;
+}
+/* 异常筋络 */
+table {
+  width: 100%;
+}
+
+th {
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  border-bottom: 1px solid #dfe6ec;
+  line-height: 28px;
+  padding: 5px 0;
+}
+td {
+  line-height: 22px;
+  padding: 3px 0;
+  border-bottom: 1px solid #dfe6ec;
+  font-size: 14px;
+}
+/* 其余表现 */
+.other_item {
+  display: flex;
+  padding: 3px;
+}
+.nowrap {
+  white-space: nowrap;
+  padding-right: 15px;
+  width: 15%;
+}
+.item_right {
+  flex: 1;
+}
+.acupoint {
+  line-height: 22px;
+  margin-top: 5px;
+}
+.title {
+  font-size: 16px;
+  font-weight: 600;
+}
+.leida {
+  display: flex;
+}
+.leida img {
+  display: block;
+  width: 200px;
+  height: 200px;
+}
+.element {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-left: 20px;
+}
+.tongue {
+  display: flex;
+}
+.tongue img {
+  width: 150px;
+  height: 150px;
+}
+/* 页脚 */
+.footer {
+  display: flex;
+}
+.footer > div {
+  flex: 1;
+}

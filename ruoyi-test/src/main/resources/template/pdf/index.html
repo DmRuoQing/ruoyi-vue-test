@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="renderer" content="webkit"/>
+    <title>Document</title>
+<!--    <link rel="stylesheet" th:href="@{classpath:/template/pdf/index.css}"/>-->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            color: #000;
+        }
+        html,
+        body {
+            width: 100%;
+            font-size: 14px;
+
+        }
+        body {
+            width: 856px;
+            padding: 20px;
+            box-sizing: border-box;
+            margin: auto;
+        }
+        .head {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0  20px;
+            font-size: 16px;
+        }
+        .head::after {
+            display: block;
+            content: "";
+            height: 1px;
+            width: 100%;
+            margin: 20px 0 ;
+            background-color: #dcdfe6;
+            flex-shrink: 1;
+            flex-grow: 1 ;
+        }
+        header {
+            font-size: 20px;
+            text-align: center;
+        }
+
+        header > p {
+            line-height: 30px;
+        }
+        .page_height{
+            height: 1190px;
+        }
+        .div_line {
+            width: 100%;
+            height: 1px;
+            background-color: #dcdfe6;
+            margin: 16px 0;
+        }
+        /* 用户信息 */
+        .userinfo {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+        .userinfo > div {
+            width: 25%;
+            height: 30px;
+            line-height: 30px;
+        }
+        /* 虚实寒热 */
+        .line_wrap {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .line_chart {
+            margin-bottom: 5px;
+            height: 155px;
+            width: 150px;
+            border-radius: 8px;
+            background-color: #999;
+        }
+        .line_chart > img {
+            display: block;
+        }
+
+        .explain {
+            margin-top: 15px;
+            background-color: #d2d6e8;
+            padding: 20px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .box-colour-atla::before {
+            display: block;
+            content: "";
+            width: 20px;
+            height: 5px;
+            margin: 0 5px;
+        }
+        .box-colour-atla.zhengchang::before {
+            background-color: #fff;
+        }
+        .box-colour-atla.hanling::before {
+            background-color: #84c591;
+        }
+        .box-colour-atla.yinxu::before {
+            background-color: #d487ff;
+        }
+        .box-colour-atla.shirei::before {
+            background-color: #ff656a;
+        }
+        .box-colour-atla.yangxu::before {
+            background-color: #13ffec;
+        }
+        .box-colour-atla.yuhan::before {
+            background-color: #000000;
+        }
+        .box-colour-atla.yinyang::before {
+            background-color: #fdffab;
+        }
+        /* 八纲辨证 */
+        .eight {
+            margin-top: 20px;
+        }
+        .eight > p {
+            text-align: center;
+        }
+
+        .title_befor {
+            display: flex;
+        }
+        .title_befor::before {
+            content: "";
+            width: 5px;
+            height: 20px;
+            background: #527dff;
+            margin-right: 10px;
+            border-radius: 2px;
+        }
+
+        .eight .content {
+            width: 100%;
+            height: 700px;
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        .eight .content > img {
+            width: 50%;
+        }
+        /* 异常筋络 */
+        table {
+            width: 100%;
+        }
+
+        th {
+            text-align: left;
+            font-size: 14px;
+            font-weight: 600;
+            border-bottom: 1px solid #dfe6ec;
+            line-height: 28px;
+            padding: 5px 0;
+        }
+        td {
+            line-height: 22px;
+            padding: 3px 0;
+            border-bottom: 1px solid #dfe6ec;
+            font-size: 14px;
+        }
+        /* 其余表现 */
+        .other_item {
+            display: flex;
+            padding: 3px;
+        }
+        .nowrap {
+            white-space: nowrap;
+            padding-right: 15px;
+            width: 15%;
+        }
+        .item_right {
+            flex: 1;
+        }
+        .acupoint {
+            line-height: 22px;
+            margin-top: 5px;
+        }
+        .title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .leida {
+            display: flex;
+        }
+        .leida img {
+            display: block;
+            width: 200px;
+            height: 200px;
+        }
+        .element {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-left: 20px;
+        }
+        .tongue {
+            display: flex;
+        }
+        .tongue img {
+            width: 150px;
+            height: 150px;
+        }
+        /* 页脚 */
+        .footer {
+            display: flex;
+        }
+        .footer > div {
+            flex: 1;
+        }
+    </style>
+</head>
+
+<body style="font-family: Microsoft YaHei, Arial, sans-serif;">
+    <section class="page_height">
+        <header>
+            <div class="head">
+                <div>编号：13446648979</div>
+                <div>姓名：欧阳上官</div>
+            </div>
+            <p>南京真经智能科技有限公司</p>
+            <p>多导经络动态检测报告</p>
+        </header>
+        <div class="div_line"></div>
+        <!-- 基础信息 -->
+        <section class="userinfo">
+            <div>姓名：<span th:text="${patient.name}">XXX</span></div>
+            <div>性别：<span>{{}}</span></div>
+            <div>出身日期：<span>{{}}</span></div>
+            <div>年龄： <span>{{}}</span></div>
+            <div>编号： <span>{{}} </span></div>
+        </section>
+        <div style="line-height: 30px;">检测所见：</div>
+        <!-- 虚实寒热图 -->
+        <section>
+            <p style="margin: 10px 0 10px 0;">井穴(阴阳平衡值 / {{1847}})-采样时间 {{2023-11-30 10:16:07}}</p>
+            <div class="line_wrap">
+                <div class="line_chart"><img src="" alt=""/></div>
+                <div class="line_chart"><img src="" alt=""/></div>
+                <div class="line_chart"><img src="" alt=""/></div>
+                <div class="line_chart"><img src="" alt=""/></div>
+                <div class="line_chart"><img src="" alt=""/></div>
+                <div class="line_chart"><img src="" alt=""/></div>
+                <div class="line_chart"><img src="" alt=""/></div>
+                <div class="line_chart"><img src="" alt=""/></div>
+                <div class="line_chart"><img src="" alt=""/></div>
+                <div class="line_chart"><img src="" alt=""/></div>
+                <div class="line_chart"><img src="" alt=""/></div>
+                <div class="line_chart"><img src="" alt=""/></div>
+                <div class="line_chart"><img src="" alt=""/></div>
+                <div class="line_chart"><img src="" alt=""/></div>
+                <div class="line_chart"><img src="" alt=""/></div>
+                <div class="line_chart"><img src="" alt=""/></div>
+                <div class="line_chart"><img src="" alt=""/></div>
+                <div class="line_chart"><img src="" alt=""/></div>
+                <div class="line_chart"><img src="" alt=""/></div>
+                <div class="line_chart"><img src="" alt=""/></div>
+            </div>
+            <div class="explain">
+                正(+)：实证；负(-)：虚证；
+                <div class="box-colour-atla zhengchang"></div>
+                <span>正常</span>
+                <div class="box-colour-atla hanling"></div>
+                <span>寒凝</span>
+                <div class="box-colour-atla yinxu"></div>
+                <span>阴虚</span>
+                <div class="box-colour-atla shirei"></div>
+                <span>实热</span>
+                <div class="box-colour-atla yangxu"></div>
+                <span>阳虚</span>
+                <div class="box-colour-atla yuhan"></div>
+                <span>瘀寒</span>
+                <div class="box-colour-atla yinyang"></div>
+                <span>阴阳两虚</span>
+            </div>
+        </section>
+    </section>
+
+    <section class="page_height">
+        <div class="head">
+            <div>编号：13446648979</div>
+            <div>姓名：欧阳上官</div>
+        </div>
+        <p style="margin: 20px 0 10px 0;">原穴(阴阳平衡值 / {{1847}})-采样时间 {{2023-11-30 10:16:07}}</p>
+        <div class="line_wrap">
+            <div class="line_chart"><img src="" alt=""/></div>
+            <div class="line_chart"><img src="" alt=""/></div>
+            <div class="line_chart"><img src="" alt=""/></div>
+            <div class="line_chart"><img src="" alt=""/></div>
+            <div class="line_chart"><img src="" alt=""/></div>
+            <div class="line_chart"><img src="" alt=""/></div>
+            <div class="line_chart"><img src="" alt=""/></div>
+            <div class="line_chart"><img src="" alt=""/></div>
+            <div class="line_chart"><img src="" alt=""/></div>
+            <div class="line_chart"><img src="" alt=""/></div>
+            <div class="line_chart"><img src="" alt=""/></div>
+            <div class="line_chart"><img src="" alt=""/></div>
+            <div class="line_chart"><img src="" alt=""/></div>
+            <div class="line_chart"><img src="" alt=""/></div>
+            <div class="line_chart"><img src="" alt=""/></div>
+            <div class="line_chart"><img src="" alt=""/></div>
+            <div class="line_chart"><img src="" alt=""/></div>
+            <div class="line_chart"><img src="" alt=""/></div>
+            <div class="line_chart"><img src="" alt=""/></div>
+            <div class="line_chart"><img src="" alt=""/></div>
+        </div>
+        <div class="explain">
+            正(+)：实证；负(-)：虚证；
+            <div class="box-colour-atla zhengchang"></div>
+            <span>正常</span>
+            <div class="box-colour-atla hanling"></div>
+            <span>寒凝</span>
+            <div class="box-colour-atla yinxu"></div>
+            <span>阴虚</span>
+            <div class="box-colour-atla shirei"></div>
+            <span>实热</span>
+            <div class="box-colour-atla yangxu"></div>
+            <span>阳虚</span>
+            <div class="box-colour-atla yuhan"></div>
+            <span>瘀寒</span>
+            <div class="box-colour-atla yinyang"></div>
+            <span>阴阳两虚</span>
+        </div>
+    </section>
+    <!-- 八纲辨证 -->
+    <section class="eight page_height">
+        <div class="head">
+            <div>编号：13446648979</div>
+            <div>姓名：欧阳上官</div>
+        </div>
+        <p>八纲辨证</p>
+        <div class="title_befor">检测八纲</div>
+        <div class="content">
+            <img src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" alt=""/>
+            <img src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" alt=""/>
+            <img src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" alt=""/>
+            <img src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" alt=""/>
+        </div>
+    </section>
+
+    <section style="margin-top: 20px;" class="page_height">
+        <table>
+            <!-- 标题 -->
+            <tr>
+                <th scope="col">经络名称</th>
+                <th scope="col">阴阳平衡值</th>
+                <th scope="col">异常性质</th>
+                <th scope="col">严重程度</th>
+            </tr>
+            <!-- 数据 -->
+            <tr>
+                <td>手太阴肺经(井)</td>
+                <td>
+                    <div>左: -11</div>
+                    <div> 右: -63</div>
+                </td>
+                <td>
+                    <div> 左：阴阳两虚</div>
+                    <div>右：阳虚</div>
+                </td>
+                <td>中度异常</td>
+            </tr>
+            <tr>
+                <td>手太阴肺经(井)</td>
+                <td>
+                    <div>左: -11</div>
+                    <div> 右: -63</div>
+                </td>
+                <td>
+                    <div> 左：阴阳两虚</div>
+                    <div>右：阳虚</div>
+                </td>
+                <td>中度异常</td>
+            </tr>
+            <tr>
+                <td>手太阴肺经(井)</td>
+                <td>
+                    <div>左: -11</div>
+                    <div> 右: -63</div>
+                </td>
+                <td>
+                    <div> 左：阴阳两虚</div>
+                    <div>右：阳虚</div>
+                </td>
+                <td>中度异常</td>
+            </tr>
+        </table>
+    </section>
+    <!-- 其余需要表现 -->
+    <section style="margin-top: 20px;" class="page_height">
+        <div class="other_item">
+            <span class="nowrap"> 严重异常经络:</span>
+            <div class="item_right">
+                <p class="title">井穴</p>
+                <p class="acupoint">足太阴脾经(原) ，手厥阴心包经(原) ，手少阴心经(原) ，足少阴肾经(原) ，手太阳小肠经(原) ，足太阳膀胱经(原) ，督脉(原) ，冲脉(原)</p>
+            </div>
+        </div>
+
+        <div class="other_item">
+            <span class="nowrap"> 四诊状态:</span>
+            <div class="item_right"> 暂无</div>
+        </div>
+        <div class="other_item">
+            <span class="nowrap"> 四诊备注:</span>
+            <div class="item_right"> 暂无</div>
+        </div>
+        <div class="other_item">
+            <span class="nowrap"> 提示:</span>
+            <div class="item_right"> 暂无</div>
+        </div>
+        <div class="other_item">
+            <span class="nowrap"> 体质雷达图:</span>
+            <div class="item_right leida">
+                <img src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" alt=""/>
+                <div class="element">
+                    <span>火：{{20}}</span>
+                    <span>木：{{20}}</span>
+                    <span>水：{{20}}</span>
+                    <span>金：{{30}}</span>
+                    <span>土：{{40}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="other_item">
+            <span class="nowrap"> 体质状况解读:</span>
+            <div class="item_right ">
+                本提示是通过经络实测、检测八纲，结合被检测者先天中医体质综合分析得出的结论，仅供临床医生及使用者参考。
+                先天体质寒，怕冷、心脾肾阳虚。心脑系统先天很弱，又受寒邪较大的影响，心阳被严重抑制、心脑系统具有很高的发病风险，要注意防范胸中疼痛、心区涨闷不适、心绞痛、心悸、心律不齐或心率过缓等症，易有两胁胀满、心区对应的背肩胛骨间隐痛不适、如有两上臂内侧心包经按压痛则心包经发生不同程度的淤堵，加大心脑发病风险。肾和膀胱系统寒气过盛、先天肾阳不足，致使身体畏寒怕冷、虽肾宫能量较强但潜在发病风险反而较高，头发浓密、牙齿较为坚固、骨骼强，女性主生殖系统如子宫、宫颈、卵巢寒气较重、男性前列腺、肾脏等易发病变，如腰膝冷、背部腰脊痛、椎间盘疾病、关节不利、下肢易冷秋冬尤其明显、小腹冷痛胀满、女性痛经等。听力敏锐、但如果出现听力疾病则需要高度重视。老年腿脚状况好、优于他人。肺和大肠先天不足、肺气虚，肺、皮肤和肠道易有寒邪侵犯，容易感冒，易引发咳嗽、鼻炎等呼吸系统疾病、偶有鼻出血、咽喉肿痛等症，要注意防范肠道疾病，会有肠鸣、腹泻、腹痛、饮食不下等状况随季节变化交替出现。皮肤要防治火郁导致的痤疮、皮肤痛等，重视养护肺。脾胃阳虚寒凉、易有消化不良、胃部冷痛、寒湿气较重引起肌肉无力等状况，偶有颌面肿、饭后易腹胀。肝胆系统先天偏弱、肝气不足、升发不利、易疲乏、头晕，注意女性月经不调和乳腺增生等。总体消化和吸收功能很弱。睡眠质量较高、多有嗜睡、睡眠沉不易醒、早起不易，年轻时多血压偏低、中年后血压偏高几率较大。熬夜不易恢复、也很难坚持。女性注意宫寒和月经不调、痛经等
+            </div>
+        </div>
+        <div class="other_item">
+            <span class="nowrap"> 舌苔图片:</span>
+            <div class="item_right tongue">
+                <img src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" alt=""/>
+            </div>
+        </div>
+        <div class="other_item">
+            <span class="nowrap"> 医生诊断:</span>
+            <div class="item_right tongue">
+                暂无
+            </div>
+        </div>
+        <div class="other_item">
+            <span class="nowrap"> 治疗方案提示:</span>
+            <div class="item_right tongue">
+                暂无
+            </div>
+        </div>
+        <div class="other_item">
+            <span class="nowrap"> 机构二维码:</span>
+            <div class="item_right ">
+                <img style="display: block; width: 150px; height: 150px;"
+                    src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" alt=""/>
+                <p> 如需深度问诊，请扫一扫二维码联系我们团队</p>
+            </div>
+        </div>
+        <p style="text-align: right; margin-top: 10px;">此报告仅供医生参考</p>
+        <div class="div_line"></div>
+
+        <div class="footer">
+            <div>报告人： {{}}</div>
+            <div>审核: {{}}</div>
+            <div>日期： {{}}</div>
+        </div>
+    </section>
+</body>
+
+<script>
+
+</script>
+
+</html>
