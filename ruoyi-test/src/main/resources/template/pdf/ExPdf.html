@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8"/>
   <title>Title</title>
   <style>
     body{
-      font-family: MiSans;
+      font-family: Microsoft YaHei, Arial, sans-serif;;
       font-size: 15px;
     }
     .title{
@@ -18,22 +18,26 @@
     .content .text{
       text-indent: 2em;
     }
-    .content .datetime{
-      text-align: right;
-    }
   </style>
 </head>
+
 <body>
 <div>
   <div class="view">
     <h2 class="title">自我介绍</h2>
     <div class="content">
       <p class="text">
-        大家好，我叫${person.personName}，我今年${person.personAge}，我是个${person.personGender}，
-        我的职业是${person.personVocation}，我目前住在${person.address}，我在性格方面${person.personalityDesc}。
+        hello <span th:text="${person.en}">XXX</span>, 大家好，
+        我叫<span th:text="${person.personName}">XXX</span>，
+        我今年<span th:text="${person.personAge}">XXX</span>，
+        我是个<span th:text="${person.personGender}">XXX</span>生，
+        我的职业是<span th:text="${person.personVocation}">XXX</span>，
+        我目前住在<span th:text="${person.address}">XXX</span>，
+        我在性格方面<span th:text="${person.personalityDesc}">XXX</span>。
       </p>
     </div>
   </div>
 </div>
 </body>
+
 </html>

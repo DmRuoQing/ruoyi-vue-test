@@ -2,22 +2,21 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <meta name="renderer" content="webkit"/>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="renderer" content="webkit" />
     <title>Document</title>
-<!--    <link rel="stylesheet" th:href="@{classpath:/template/pdf/index.css}"/>-->
     <style>
         * {
             margin: 0;
             padding: 0;
             color: #000;
+            font-family: Microsoft YaHei, Arial, sans-serif;;
         }
         html,
         body {
             width: 100%;
             font-size: 14px;
-
         }
         body {
             width: 856px;
@@ -25,21 +24,28 @@
             box-sizing: border-box;
             margin: auto;
         }
-        .head {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0  20px;
-            font-size: 16px;
+        img {
+            display: block;
         }
+        .head {
+            font-size: 14px;
+            overflow: auto;
+        }
+        .head > div {
+            float: left;
+            margin-right: 20px;
+            line-height: 20px;
+        }
+
         .head::after {
             display: block;
             content: "";
             height: 1px;
             width: 100%;
-            margin: 20px 0 ;
+            margin: 40px 0 20px 0;
             background-color: #dcdfe6;
             flex-shrink: 1;
-            flex-grow: 1 ;
+            flex-grow: 1;
         }
         header {
             font-size: 20px;
@@ -49,8 +55,31 @@
         header > p {
             line-height: 30px;
         }
-        .page_height{
+        .page_height {
+            box-sizing: border-box;
+            padding: 20px 0;
             height: 1190px;
+            position: relative;
+        }
+        .page_footer {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            overflow: auto;
+        }
+        .fl {
+            float: left;
+        }
+        .fr {
+            float: right;
+        }
+        .page_footer::after {
+            display: block;
+            content: "";
+            width: 100%;
+            height: 1px;
+            background-color: #dcdfe6;
+            margin-top: 40px;
         }
         .div_line {
             width: 100%;
@@ -60,27 +89,30 @@
         }
         /* 用户信息 */
         .userinfo {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: flex-start;
+            overflow: auto;
         }
         .userinfo > div {
             width: 25%;
             height: 30px;
             line-height: 30px;
+            white-space: nowrap;
+            float: left;
         }
         /* 虚实寒热 */
         .line_wrap {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
+            overflow: auto;
         }
         .line_chart {
+            float: left;
+            margin-right: 16px;
             margin-bottom: 5px;
             height: 155px;
             width: 150px;
             border-radius: 8px;
             background-color: #999;
+        }
+        .line_chart:nth-child(5n) {
+            margin-right: 0;
         }
         .line_chart > img {
             display: block;
@@ -89,11 +121,20 @@
         .explain {
             margin-top: 15px;
             background-color: #d2d6e8;
-            padding: 20px;
             border-radius: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            line-height: 26px;
+            height: 30px;
+            padding: 10px 10%;
+        }
+        .explain > * {
+            float: left;
+            padding: 2px 0;
+            margin: 0 auto;
+        }
+        .explain > *::after {
+            content: "";
+            display: table;
+            clear: both;
         }
 
         .box-colour-atla::before {
@@ -101,7 +142,7 @@
             content: "";
             width: 20px;
             height: 5px;
-            margin: 0 5px;
+            margin: 10px 5px 5px 10px;
         }
         .box-colour-atla.zhengchang::before {
             background-color: #fff;
@@ -133,7 +174,6 @@
         }
 
         .title_befor {
-            display: flex;
         }
         .title_befor::before {
             content: "";
@@ -142,17 +182,24 @@
             background: #527dff;
             margin-right: 10px;
             border-radius: 2px;
+            display: block;
+            float: left;
         }
 
         .eight .content {
             width: 100%;
             height: 700px;
-            display: flex;
-            flex-wrap: wrap;
             margin-top: 15px;
         }
         .eight .content > img {
-            width: 50%;
+            width: 400px;
+            height: 400px;
+            display: block;
+            float: left;
+            margin-bottom: 8px;
+        }
+        .eight .content > img:nth-child(2n) {
+            margin-left: 8px;
         }
         /* 异常筋络 */
         table {
@@ -203,34 +250,36 @@
             height: 200px;
         }
         .element {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
             margin-left: 20px;
         }
+        .element > p {
+            margin-bottom: 10px;
+        }
         .tongue {
-            display: flex;
+            /* display: flex; */
         }
         .tongue img {
+            float: left;
             width: 150px;
             height: 150px;
         }
         /* 页脚 */
         .footer {
-            display: flex;
+            overflow: auto;
         }
         .footer > div {
-            flex: 1;
+            float: left;
         }
     </style>
 </head>
 
-<body style="font-family: Microsoft YaHei, Arial, sans-serif;">
+<body>
+    <!-- 首页和井穴 -->
     <section class="page_height">
         <header>
             <div class="head">
-                <div>编号：13446648979</div>
-                <div>姓名：欧阳上官</div>
+                <div>编号：<span th:text="${patient.archivesNum}">20231130172811530001 </span></div>
+                <div>姓名：<span th:text="${patient.name}">XXX</span></div>
             </div>
             <p>南京真经智能科技有限公司</p>
             <p>多导经络动态检测报告</p>
@@ -239,39 +288,42 @@
         <!-- 基础信息 -->
         <section class="userinfo">
             <div>姓名：<span th:text="${patient.name}">XXX</span></div>
-            <div>性别：<span>{{}}</span></div>
-            <div>出身日期：<span>{{}}</span></div>
-            <div>年龄： <span>{{}}</span></div>
-            <div>编号： <span>{{}} </span></div>
+            <div>性别：<span th:text="${patient.sex}">男</span></div>
+            <div>出身日期：<span th:text="${patient.birthday}">2023-11-30</span></div>
+            <div>年龄： <span th:text="${patient.age}">10</span></div>
+            <div>编号： <span th:text="${patient.archivesNum}">20231130172811530001 </span></div>
         </section>
         <div style="line-height: 30px;">检测所见：</div>
-        <!-- 虚实寒热图 -->
+        <!-- 井穴 虚实寒热图 -->
         <section>
-            <p style="margin: 10px 0 10px 0;">井穴(阴阳平衡值 / {{1847}})-采样时间 {{2023-11-30 10:16:07}}</p>
+            <p style="margin: 10px 0 10px 0; text-align: center;">
+                井穴(阴阳平衡值 / <span th:text="${record.jing.value}">1847</span>)
+                -采样时间 <span th:text="${record.createTime}">2023-11-30 10:16:07</span>
+            </p>
             <div class="line_wrap">
-                <div class="line_chart"><img src="" alt=""/></div>
-                <div class="line_chart"><img src="" alt=""/></div>
-                <div class="line_chart"><img src="" alt=""/></div>
-                <div class="line_chart"><img src="" alt=""/></div>
-                <div class="line_chart"><img src="" alt=""/></div>
-                <div class="line_chart"><img src="" alt=""/></div>
-                <div class="line_chart"><img src="" alt=""/></div>
-                <div class="line_chart"><img src="" alt=""/></div>
-                <div class="line_chart"><img src="" alt=""/></div>
-                <div class="line_chart"><img src="" alt=""/></div>
-                <div class="line_chart"><img src="" alt=""/></div>
-                <div class="line_chart"><img src="" alt=""/></div>
-                <div class="line_chart"><img src="" alt=""/></div>
-                <div class="line_chart"><img src="" alt=""/></div>
-                <div class="line_chart"><img src="" alt=""/></div>
-                <div class="line_chart"><img src="" alt=""/></div>
-                <div class="line_chart"><img src="" alt=""/></div>
-                <div class="line_chart"><img src="" alt=""/></div>
-                <div class="line_chart"><img src="" alt=""/></div>
-                <div class="line_chart"><img src="" alt=""/></div>
+                <div class="line_chart"><img src="" alt="" /></div>
+                <div class="line_chart"><img src="" alt="" /></div>
+                <div class="line_chart"><img src="" alt="" /></div>
+                <div class="line_chart"><img src="" alt="" /></div>
+                <div class="line_chart"><img src="" alt="" /></div>
+                <div class="line_chart"><img src="" alt="" /></div>
+                <div class="line_chart"><img src="" alt="" /></div>
+                <div class="line_chart"><img src="" alt="" /></div>
+                <div class="line_chart"><img src="" alt="" /></div>
+                <div class="line_chart"><img src="" alt="" /></div>
+                <div class="line_chart"><img src="" alt="" /></div>
+                <div class="line_chart"><img src="" alt="" /></div>
+                <div class="line_chart"><img src="" alt="" /></div>
+                <div class="line_chart"><img src="" alt="" /></div>
+                <div class="line_chart"><img src="" alt="" /></div>
+                <div class="line_chart"><img src="" alt="" /></div>
+                <div class="line_chart"><img src="" alt="" /></div>
+                <div class="line_chart"><img src="" alt="" /></div>
+                <div class="line_chart"><img src="" alt="" /></div>
+                <div class="line_chart"><img src="" alt="" /></div>
             </div>
             <div class="explain">
-                正(+)：实证；负(-)：虚证；
+                <span>正(+)：实证；负(-)：虚证；</span>
                 <div class="box-colour-atla zhengchang"></div>
                 <span>正常</span>
                 <div class="box-colour-atla hanling"></div>
@@ -288,35 +340,43 @@
                 <span>阴阳两虚</span>
             </div>
         </section>
+        <div class="page_footer">
+            <div class="fl">此报告仅供参考，不作最终解释</div>
+            <div class="fr">时间： <span th:text="${diagnosis.createTime}">2023-11-30 10:16:07</span></div>
+        </div>
     </section>
 
+    <!-- 原穴 -->
     <section class="page_height">
         <div class="head">
-            <div>编号：13446648979</div>
-            <div>姓名：欧阳上官</div>
+            <div>编号：<span th:text="${patient.archivesNum}">20231130172811530001 </span></div>
+            <div>姓名：<span th:text="${patient.name}">XXX</span></div>
         </div>
-        <p style="margin: 20px 0 10px 0;">原穴(阴阳平衡值 / {{1847}})-采样时间 {{2023-11-30 10:16:07}}</p>
+        <p style="margin: 20px 0 10px 0; text-align: center;">
+            原穴(阴阳平衡值 / <span th:text="${record.jing.value}">1847</span>)
+            -采样时间 <span th:text="${record.createTime}">2023-11-30 10:16:07</span>
+        </p>
         <div class="line_wrap">
-            <div class="line_chart"><img src="" alt=""/></div>
-            <div class="line_chart"><img src="" alt=""/></div>
-            <div class="line_chart"><img src="" alt=""/></div>
-            <div class="line_chart"><img src="" alt=""/></div>
-            <div class="line_chart"><img src="" alt=""/></div>
-            <div class="line_chart"><img src="" alt=""/></div>
-            <div class="line_chart"><img src="" alt=""/></div>
-            <div class="line_chart"><img src="" alt=""/></div>
-            <div class="line_chart"><img src="" alt=""/></div>
-            <div class="line_chart"><img src="" alt=""/></div>
-            <div class="line_chart"><img src="" alt=""/></div>
-            <div class="line_chart"><img src="" alt=""/></div>
-            <div class="line_chart"><img src="" alt=""/></div>
-            <div class="line_chart"><img src="" alt=""/></div>
-            <div class="line_chart"><img src="" alt=""/></div>
-            <div class="line_chart"><img src="" alt=""/></div>
-            <div class="line_chart"><img src="" alt=""/></div>
-            <div class="line_chart"><img src="" alt=""/></div>
-            <div class="line_chart"><img src="" alt=""/></div>
-            <div class="line_chart"><img src="" alt=""/></div>
+            <div class="line_chart"><img src="" alt="" /></div>
+            <div class="line_chart"><img src="" alt="" /></div>
+            <div class="line_chart"><img src="" alt="" /></div>
+            <div class="line_chart"><img src="" alt="" /></div>
+            <div class="line_chart"><img src="" alt="" /></div>
+            <div class="line_chart"><img src="" alt="" /></div>
+            <div class="line_chart"><img src="" alt="" /></div>
+            <div class="line_chart"><img src="" alt="" /></div>
+            <div class="line_chart"><img src="" alt="" /></div>
+            <div class="line_chart"><img src="" alt="" /></div>
+            <div class="line_chart"><img src="" alt="" /></div>
+            <div class="line_chart"><img src="" alt="" /></div>
+            <div class="line_chart"><img src="" alt="" /></div>
+            <div class="line_chart"><img src="" alt="" /></div>
+            <div class="line_chart"><img src="" alt="" /></div>
+            <div class="line_chart"><img src="" alt="" /></div>
+            <div class="line_chart"><img src="" alt="" /></div>
+            <div class="line_chart"><img src="" alt="" /></div>
+            <div class="line_chart"><img src="" alt="" /></div>
+            <div class="line_chart"><img src="" alt="" /></div>
         </div>
         <div class="explain">
             正(+)：实证；负(-)：虚证；
@@ -335,23 +395,33 @@
             <div class="box-colour-atla yinyang"></div>
             <span>阴阳两虚</span>
         </div>
+        <div class="page_footer">
+            <span class="fl">此报告仅供参考，不作最终解释</span>
+            <span class="fr">时间： <span th:text="${diagnosis.createTime}">2023-11-30 10:16:07</span></span>
+        </div>
     </section>
+
     <!-- 八纲辨证 -->
     <section class="eight page_height">
         <div class="head">
-            <div>编号：13446648979</div>
-            <div>姓名：欧阳上官</div>
+            <div>编号：<span th:text="${patient.archivesNum}">20231130172811530001 </span></div>
+            <div>姓名：<span th:text="${patient.name}">XXX</span></div>
         </div>
         <p>八纲辨证</p>
         <div class="title_befor">检测八纲</div>
         <div class="content">
-            <img src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" alt=""/>
-            <img src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" alt=""/>
-            <img src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" alt=""/>
-            <img src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" alt=""/>
+            <img src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" alt="" />
+            <img src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" alt="" />
+            <img src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" alt="" />
+            <img src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" alt="" />
+        </div>
+        <div class="page_footer">
+            <span class="fl">此报告仅供参考，不作最终解释</span>
+            <span class="fr">时间： <span th:text="${diagnosis.createTime}">2023-11-30 10:16:07</span></span>
         </div>
     </section>
 
+    <!-- 异常经络 -->
     <section style="margin-top: 20px;" class="page_height">
         <table>
             <!-- 标题 -->
@@ -399,9 +469,18 @@
                 <td>中度异常</td>
             </tr>
         </table>
+        <div class="page_footer">
+            <span class="fl">此报告仅供参考，不作最终解释</span>
+            <span class="fr">时间： <span th:text="${diagnosis.createTime}">2023-11-30 10:16:07</span></span>
+        </div>
     </section>
+
     <!-- 其余需要表现 -->
     <section style="margin-top: 20px;" class="page_height">
+        <div class="head">
+            <div>编号：<span th:text="${patient.archivesNum}">20231130172811530001 </span></div>
+            <div>姓名：<span th:text="${patient.name}">XXX</span></div>
+        </div>
         <div class="other_item">
             <span class="nowrap"> 严重异常经络:</span>
             <div class="item_right">
@@ -425,13 +504,13 @@
         <div class="other_item">
             <span class="nowrap"> 体质雷达图:</span>
             <div class="item_right leida">
-                <img src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" alt=""/>
+                <img src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" alt="" />
                 <div class="element">
-                    <span>火：{{20}}</span>
-                    <span>木：{{20}}</span>
-                    <span>水：{{20}}</span>
-                    <span>金：{{30}}</span>
-                    <span>土：{{40}}</span>
+                    <p>火：{{20}}</p>
+                    <p>木：{{20}}</p>
+                    <p>水：{{20}}</p>
+                    <p>金：{{30}}</p>
+                    <p>土：{{40}}</p>
                 </div>
             </div>
         </div>
@@ -445,9 +524,10 @@
         <div class="other_item">
             <span class="nowrap"> 舌苔图片:</span>
             <div class="item_right tongue">
-                <img src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" alt=""/>
+                <img src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" alt="" />
             </div>
         </div>
+
         <div class="other_item">
             <span class="nowrap"> 医生诊断:</span>
             <div class="item_right tongue">
@@ -464,7 +544,7 @@
             <span class="nowrap"> 机构二维码:</span>
             <div class="item_right ">
                 <img style="display: block; width: 150px; height: 150px;"
-                    src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" alt=""/>
+                    src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" alt="" />
                 <p> 如需深度问诊，请扫一扫二维码联系我们团队</p>
             </div>
         </div>
@@ -472,15 +552,15 @@
         <div class="div_line"></div>
 
         <div class="footer">
-            <div>报告人： {{}}</div>
-            <div>审核: {{}}</div>
-            <div>日期： {{}}</div>
+            <div>报告人： </div>
+            <div>审核： </div>
+            <div>日期： <span th:text="${diagnosis.createTime}">2023-11-30 10:16:07</span></div>
+        </div>
+        <div class="page_footer">
+            <span>此报告仅供参考，不作最终解释</span>
+            <span>时间： <span th:text="${diagnosis.createTime}">2023-11-30 10:16:07</span></span>
         </div>
     </section>
 </body>
-
-<script>
-
-</script>
 
 </html>

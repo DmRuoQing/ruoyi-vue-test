@@ -2,69 +2,91 @@ package com.ruoyi.test.utils;
 
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
+import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
 import com.itextpdf.layout.font.FontProvider;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.*;
-import freemarker.cache.ClassTemplateLoader;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import lombok.extern.slf4j.Slf4j;
+import org.xhtmlrenderer.pdf.ITextFontResolver;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.*;
-import java.util.Map;
 
-@Slf4j
+/**
+ * pdf文件工具类 - 对css3的支持都不是很好
+ *
+ * @Author DmRuoQing
+ * @Create 2023/12/01 15:58
+ */
 public class PdfUtil {
-    // 原始记录的Excel模板
-    public static final String EX_PDF = "ExPdf.html";
-    public static final String INDEX = "index.html";
 
     /**
-     * 获取模板内容
+     * HTML转PDF
+     * 使用 iTextPDF 库 - 仍存在样式问题
      *
-     * @param paramMap          模板参数
-     * @return 结果
-     */
-    public static String getTemplateContent(String templateName, Map<String, Object> paramMap) {
-        Configuration configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
-        ClassTemplateLoader loader = new ClassTemplateLoader(
-                PdfUtil.class, File.separator+ "template" + File.separator+ "pdf" + File.separator
-        );
-        Writer out = new StringWriter();
-        try {
-            configuration.setTemplateLoader(loader);
-            Template template = configuration.getTemplate(templateName, "UTF-8");
-            template.process(paramMap, out);
-            out.flush();
-            out.close();
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
-        return out.toString();
-    }
-
-    /**
-     * HTML 转 PDF
-     *
-     * @param content html内容
+     * @param htmlContent html内容
      * @return PDF字节数组
      */
-    public static byte[] html2Pdf(String content) {
+    public static byte[] html2Pdf_IText(String htmlContent) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
+            // 创建 PdfWriter 关联到输出流
+            PdfWriter writer = new PdfWriter(outputStream);
+            // PdfDocument 用于创建和管理 PDF 文件，而 Document 用于向 PDF 添加内容。
+            PdfDocument pdf = new PdfDocument(writer);
+            // 创建一个 Document 并关联到 pdfDocument
+            Document document = new Document(pdf, PageSize.A4);
+
             ConverterProperties converterProperties = new ConverterProperties();
             converterProperties.setCharset("UTF-8");
             FontProvider fontProvider = new FontProvider();
+            // TODO 使用已有字体
             fontProvider.addSystemFonts();
             converterProperties.setFontProvider(fontProvider);
-            HtmlConverter.convertToPdf(content, outputStream, converterProperties);
+            HtmlConverter.convertToPdf(htmlContent, document.getPdfDocument(), converterProperties);
+//            HtmlConverter.convertToPdf(htmlContent, outputStream, converterProperties);
+            document.close();
         } catch (Exception e) {
-            log.error("生成 PDF 失败, {0}", e);
+            throw new RuntimeException("生成 PDF 失败: " + e.getMessage());
         }
         return outputStream.toByteArray();
     }
 
+    /**
+     * HTML转PDF
+     * 使用 Flying Saucer 库 - 仍存在样式问题
+     *
+     * @param htmlContent html内容
+     * @return PDF字节数组
+     */
+    public static byte[] html2Pdf_FlyingSaucer(String htmlContent) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            ITextRenderer renderer = new ITextRenderer();
+            // 中文支持
+            ITextFontResolver fontResolver = renderer.getFontResolver();
+            fontResolver.addFont("fonts/msyh.ttc,0", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+            renderer.setDocumentFromString(htmlContent);
+            renderer.layout();
+            renderer.createPDF(outputStream, false);
+            renderer.finishPDF();
+        } catch (DocumentException | IOException e) {
+            throw new RuntimeException(e);
+        }
+        return outputStream.toByteArray();
+    }
+
+    /**
+     * 给pdf文件增加水印
+     *
+     * @param waterMarkText 水印文字
+     * @param pdfFileBytes pdf字节文件
+     * @return 新的pdf字节文件
+     */
     public static byte[] addWaterMark(String waterMarkText, byte[] pdfFileBytes) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
@@ -111,4 +133,3 @@ public class PdfUtil {
         return outputStream.toByteArray();
     }
 }
-

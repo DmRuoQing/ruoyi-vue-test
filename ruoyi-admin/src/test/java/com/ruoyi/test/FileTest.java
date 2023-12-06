@@ -19,26 +19,7 @@ import java.util.Map;
 public class FileTest {
 
     @Test
-    void test02() throws IOException {
-        Map<String, Object> param = new HashMap<>();
-        Map<String, Object> personIntroduce = new HashMap<>();
-        personIntroduce.put("personName", "张三");
-        personIntroduce.put("address", "杭州");
-        personIntroduce.put("personAge", 23);
-        personIntroduce.put("personGender", "男");
-        personIntroduce.put("personalityDesc", "这个人有点懒");
-        personIntroduce.put("personVocation", "Java后端");
-        param.put("person", personIntroduce);
-        // html转pdf
-        String templateContent = PdfUtil.getTemplateContent(PdfUtil.EX_PDF, param);
-        byte[] resources = PdfUtil.html2Pdf(templateContent);
-        // 添加水印
-        byte[] data = PdfUtil.addWaterMark("中文测试abc", resources);
-        FileUtils.writeBytes(data, RuoYiConfig.getImportPath(), "pdf");
-    }
-
-    @Test
-    void test02_2() throws IOException {
+    void test02_1() throws IOException {
         Map<String, Object> param = new HashMap<>();
         Map<String, Object> personIntroduce = new HashMap<>();
         personIntroduce.put("en", "world");
@@ -50,50 +31,56 @@ public class FileTest {
         personIntroduce.put("personVocation", "Java后端");
         param.put("person", personIntroduce);
         // html转pdf
-        byte[] resources = ThymeleafUtil.exportPdfFile(ThymeleafUtil.EX_PDF_THYMELEAF, param);
-        // 添加水印
-        byte[] data = PdfUtil.addWaterMark("中文测试abc", resources);
+        String htmlContent = ThymeleafUtil.getThymeleafHtmlContent(ThymeleafUtil.EX_PDF, param);
+        byte[] temp = PdfUtil.html2Pdf_IText(htmlContent);
+        byte[] data = PdfUtil.addWaterMark("中文测试abc", temp);
         FileUtils.writeBytes(data, RuoYiConfig.getImportPath(), "pdf");
     }
 
     @Test
-    void test02_3() throws IOException {
-        Map<String, Object> param = new HashMap<>();
-        Map<String, Object> patient = new HashMap<>();
-        patient.put("name", "张三");
-        param.put("patient", patient);
+    void test02_2() throws IOException {
+        // 参数构造
+        Map<String, Object> params = getReportParams();
         // html转pdf
-        byte[] resources = ThymeleafUtil.exportPdfFile(ThymeleafUtil.INDEX, param);
-        // 添加水印
-//        byte[] data = PdfUtil.addWaterMark("中文测试abc", resources);
-//        FileUtils.writeBytes(data, RuoYiConfig.getImportPath(), "pdf");
-        FileUtils.writeBytes(resources, RuoYiConfig.getImportPath(), "pdf");
-    }
-
-    @Test
-    void test02_4() throws IOException {
-        Map<String, Object> param = new HashMap<>();
-        Map<String, Object> patient = new HashMap<>();
-        patient.put("name", "张三");
-        param.put("patient", patient);
-        // html字符串
-        String htmlContent = ThymeleafUtil.getThymeleafHtmlContent(ThymeleafUtil.INDEX, param);
-        // 导出
-        FileUtils.writeBytes(htmlContent.getBytes(), RuoYiConfig.getImportPath(), "html");
-    }
-
-    @Test
-    void test03() throws IOException {
-        // TODO 不可用
-        Map<String, Object> param = new HashMap<>();
-        Map<String, Object> patient = new HashMap<>();
-        patient.put("name", "张三");
-        param.put("patient", patient);
-        // html转pdf
-        String templateContent = PdfUtil.getTemplateContent(PdfUtil.INDEX, param);
-        byte[] resources = PdfUtil.html2Pdf(templateContent);
-        // 添加水印
-        byte[] data = PdfUtil.addWaterMark("中文测试abc", resources);
+        String htmlContent = ThymeleafUtil.getThymeleafHtmlContent(ThymeleafUtil.INDEX, params);
+        byte[] data = PdfUtil.html2Pdf_FlyingSaucer(htmlContent);
         FileUtils.writeBytes(data, RuoYiConfig.getImportPath(), "pdf");
+    }
+
+    @Test
+    void test02_2_2() throws IOException {
+        // 参数构造
+        Map<String, Object> params = getReportParams();
+        // html转pdf
+        String htmlContent = ThymeleafUtil.getThymeleafHtmlContent(ThymeleafUtil.INDEX, params);
+        byte[] data = PdfUtil.html2Pdf_IText(htmlContent);
+        FileUtils.writeBytes(data, RuoYiConfig.getImportPath(), "pdf");
+    }
+
+    private Map<String, Object> getReportParams() {
+        Map<String, Object> params = new HashMap<>();
+        Map<String, Object> patient = new HashMap<>();
+        patient.put("name", "张三");
+        patient.put("sex", "男");
+        patient.put("birthday", "2023-11-30");
+        patient.put("age", 10);
+        patient.put("archivesNum", "20231130172811530001");
+        params.put("patient", patient);
+
+        Map<String, Object> diagnosis = new HashMap<>();
+        diagnosis.put("createTime", "2023-11-30 10:16:07");
+        params.put("diagnosis", diagnosis);
+
+        Map<String, Object> record = new HashMap<>();
+        record.put("createTime", "2021-12-23 10:30:16");
+        Map<String, Object> jing = new HashMap<>();
+        jing.put("value", 513);
+        record.put("jing", jing);
+        Map<String, Object> yuan = new HashMap<>();
+        yuan.put("value", 418);
+        record.put("yuan", yuan);
+        params.put("record", record);
+
+        return params;
     }
 }

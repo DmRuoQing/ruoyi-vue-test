@@ -89,10 +89,8 @@ spring:
         max-active: 8
         # #连接池最大阻塞等待时间（使用负值表示没有限制）
         max-wait: -1ms
-  freemarker:
-    # 不检查模板文件夹是否存在
-    checkTemplateLocation: false
   thymeleaf:
+    # 不检查模板文件夹是否存在
     check-template-location: false
 
 # token配置

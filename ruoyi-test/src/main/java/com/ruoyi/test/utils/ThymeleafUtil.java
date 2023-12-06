@@ -1,23 +1,20 @@
 package com.ruoyi.test.utils;
 
-import com.itextpdf.text.pdf.BaseFont;
-import com.lowagie.text.DocumentException;
 import com.ruoyi.common.constant.Constants;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
-import org.xhtmlrenderer.pdf.ITextFontResolver;
-import org.xhtmlrenderer.pdf.ITextRenderer;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.Map;
 
 public class ThymeleafUtil {
     public static final String EX_PDF = "ExPdf.html";
-    public static final String EX_PDF_THYMELEAF = "ExPdf-thymeleaf.html";
     public static final String INDEX = "index.html";
 
+    /**
+     * 用于获取 Thymeleaf 模板引擎
+     *
+     * @return 模板引擎
+     */
     private static TemplateEngine init() {
         // 设置参数
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
@@ -32,6 +29,13 @@ public class ThymeleafUtil {
         return templateEngine;
     }
 
+    /**
+     * 通过模板将参数回填到html
+     *
+     * @param templateName 模板名 - 该类所在的模块的resources下的 /template/pdf/ 中
+     * @param params 参数
+     * @return html文本
+     */
     public static String getThymeleafHtmlContent(String templateName, Map<String,Object> params) {
         TemplateEngine templateEngine = init();
 
@@ -41,23 +45,5 @@ public class ThymeleafUtil {
 
         // 处理模板 - 回填值
         return templateEngine.process(templateName, context);
-    }
-
-    public static byte[] exportPdfFile(String templateName, Map<String, Object> params) {
-        String htmlContent = getThymeleafHtmlContent(templateName, params);
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        try {
-            ITextRenderer renderer = new ITextRenderer();
-            // 中文支持
-            ITextFontResolver fontResolver = renderer.getFontResolver();
-            fontResolver.addFont("fonts/msyh.ttc,0", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-            renderer.setDocumentFromString(htmlContent);
-            renderer.layout();
-            renderer.createPDF(outputStream, false);
-            renderer.finishPDF();
-        } catch (DocumentException | IOException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-        return outputStream.toByteArray();
     }
 }
