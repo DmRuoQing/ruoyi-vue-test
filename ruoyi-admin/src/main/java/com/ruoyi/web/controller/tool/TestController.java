@@ -32,7 +32,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/test/user")
 public class TestController extends BaseController {
-    private final static Map<Integer, UserEntity> users = new LinkedHashMap<Integer, UserEntity>();
+    private final static Map<Integer, UserEntity> users = new LinkedHashMap<>();
 
     static {
         users.put(1, new UserEntity(1, "admin", "admin123", "15888888888"));

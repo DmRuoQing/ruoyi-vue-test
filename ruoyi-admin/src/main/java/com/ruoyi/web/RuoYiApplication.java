@@ -1,4 +1,4 @@
-package com.ruoyi;
+package com.ruoyi.web;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
